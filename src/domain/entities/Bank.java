@@ -37,7 +37,6 @@ public class Bank {
                     return a.debit(value);
                 })
                 .orElse(0.0d);
-
     }
 
     public void transfer(String start, String destination, double value) {
@@ -62,7 +61,6 @@ public class Bank {
 
     public Predicate<Account> findAccount(String acc) {
         return account -> account.getNumber().contains(acc);
-
     }
 
     public Account findAccountByNumber(String number) {
