@@ -18,75 +18,75 @@ Meanwhile, the compiled output files will be generated in the `bin` folder by de
 The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
 
 ```mermaid
-    classDiagram
-    direction TB
+        classDiagram
+direction TB
 
-    class IAutenticavel {
-        <<interface>>
-        +autenticar(senha: String): boolean
-    }
+class IAuthenticatable {
+    <<interface>>
+    +authenticate(password: String): boolean
+}
 
-    class Cliente {
-        -id: String
-        -nome: String
-        -email: String
-        -senha: String
-        +autenticar(email:String, senha: String): boolean
-    }
+class Client {
+    -id: String
+    -name: String
+    -email: String
+    -password: String
+    +authenticate(email: String, password: String): boolean
+}
 
-    class Conta {
-        <<abstract>>
-        -numero: String
-        -saldo: double
-        -cliente: Cliente
-        +depositar(valor: double)
-        +sacar(valor: double)
-        +transferir(destino: Conta, valor: double)
-        +consultarSaldo(): double
-    }
+class Account {
+    <<abstract>>
+    -number: String
+    -balance: double
+    -client: Client
+    +credit(amount: double)
+    +debit(amount: double): double
+    +getMoney(): double
+    +getNumber(): String
+    +getClient(): Client
+}
 
-    class ContaCorrente {
-        +sacar(valor: double)
-    }
+class CheckingAccount {
+    +debit(amount: double): double
+}
 
-    class ContaPoupanca {
-        +sacar(valor: double)
-    }
+class SavingsAccount {
+    +debit(amount: double): double
+}
 
-    class Transacao {
-        -id: String
-        -data: Date
-        -valor: double
-        -tipo: String
-        -contaOrigem: Conta
-        -contaDestino: Conta
-    }
+class Bank {
+    -clients: Set~Account~
+    +createAccount(number: String, client: Client, accountType: AccountTypes)
+    +deposit(accountNumber: String, amount: double)
+    +withdraw(accountNumber: String, amount: double): double
+    +transfer(fromAccount: String, toAccount: String, amount: double)
+    +viewAccount(accountNumber: String, name: String, email: String)
+    +findAccount(accountNumber: String): Predicate~Account~
+    +findAccountByNumber(number: String): Account
+    +getAccountsByClient(client: Client): Set~Account~
+}
 
-    class IServicoTransferencia {
-        <<interface>>
-        +executar(origem: Conta, destino: Conta, valor: double)
-    }
+class IAuthenticationService {
+    <<interface>>
+    +login(email: String, password: String): boolean
+    +register(client: Client)
+    +getAuthenticatedClient(): Client
+}
 
-    class ServicoTransferenciaImpl {
-        +executar(origem: Conta, destino: Conta, valor: double)
-    }
+class AuthenticationService {
+    -clients: Set~Client~
+    -authenticatedClient: Client
+    +login(email: String, password: String): boolean
+    +register(client: Client)
+    +getAuthenticatedClient(): Client
+}
 
-    class IAutenticacaoService {
-        <<interface>>
-        +login(email: String, senha: String): boolean
-        +registrar(cliente: Cliente)
-    }
+IAuthenticatable <|.. Client
+Account <|-- CheckingAccount
+Account <|-- SavingsAccount
+Bank --> Account : manages >
+IAuthenticationService <|.. AuthenticationService
 
-    class AutenticacaoServiceImpl {
-        +login(email: String, senha: String): boolean
-        +registrar(cliente: Cliente)
-    }
-
-    IAutenticavel <|.. Cliente
-    Conta <|-- ContaCorrente
-    Conta <|-- ContaPoupanca
-    IServicoTransferencia <|.. ServicoTransferenciaImpl
-    IAutenticacaoService <|.. AutenticacaoServiceImpl
 
 
 ```

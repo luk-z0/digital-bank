@@ -3,8 +3,10 @@ package domain.entities;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import domain.enums.AccountTypes;
+import domain.services.AuthenticationService;
 
 public class Bank {
 
@@ -27,7 +29,7 @@ public class Bank {
                 .forEach(account -> account.credit(value));
     }
 
-    public void withdrawal(String acc, double value) {
+    public void withdraw(String acc, double value) {
         clients.stream()
                 .filter(this.findAccount(acc))
                 .findFirst()
@@ -41,12 +43,12 @@ public class Bank {
     public void transfer(String start, String destination, double value) {
         Account from = findAccountByNumber(start);
 
-        if (from.getBalance() < value) {
+        if (from.getMoney() < value) {
             System.out.println("Insufficient balance in the source account.");
             return;
         }
 
-        this.withdrawal(start, value);
+        this.withdraw(start, value);
         this.deposit(destination, value);
     }
 
@@ -69,13 +71,36 @@ public class Bank {
                 .findFirst().get();
     }
 
+    public Set<Account> getAccountsByClient(Client client) {
+        return clients.stream()
+                .filter(acc -> acc.getClient().equals(client))
+                .collect(Collectors.toSet());
+    }
+
     public static void main(String[] args) {
         Bank bank = new Bank();
-        bank.createAccount("1", new Client("1", "Lucas", "lucas@teste.com", "pass"), AccountTypes.CHECKING);
-        bank.createAccount("2", new Client("2", "Débora", "debora@teste.com", "pass"), AccountTypes.SAVINGS);
+        AuthenticationService auth = new AuthenticationService();
 
-        bank.deposit("2", 100);
-        bank.viewAccount("2", "Débora", "debora@teste.com");
+        Client lucas = new Client("1", "Lucas", "lucas@teste.com", "pass");
+        Client debora = new Client("2", "Débora", "debora@teste.com", "pass");
 
+        auth.register(lucas);
+        auth.register(debora);
+
+        bank.createAccount("1", lucas, AccountTypes.CHECKING);
+        bank.createAccount("2", debora, AccountTypes.SAVINGS);
+
+        if (auth.login("lucas@teste.com", "pass")) {
+            Client loggedIn = auth.getAuthenticatedClient();
+
+            Set<Account> accounts = bank.getAccountsByClient(loggedIn);
+
+            accounts.forEach(acc -> {
+                bank.deposit(acc.getNumber(), 500.0);
+                System.out.println("Deposited to account: " + acc.getNumber());
+            });
+        } else {
+            System.out.println("Login failed.");
+        }
     }
 }
