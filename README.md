@@ -1,21 +1,33 @@
-## Getting Started
+# 💻 Banco Digital
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Simulação simples de um sistema bancário digital desenvolvido em Java, utilizando princípios de orientação a objetos. O projeto permite criação de contas, autenticação de clientes, depósitos, saques e transferências — com uma arquitetura limpa baseada em interfaces e serviços. Utiliza **Lombok** para reduzir o código repetitivo e **Mermaid** para o diagrama UML.
 
-## Folder Structure
+---
 
-The workspace contains two folders by default, where:
+## 📦 Funcionalidades
 
--   `src`: the folder to maintain sources
--   `lib`: the folder to maintain dependencies
+- ✅ Criar contas correntes e poupança
+- ✅ Registrar e autenticar clientes
+- ✅ Realizar depósitos, saques e transferências
+- ✅ Acessar contas por filtros usando Stream
+- ✅ Arquitetura desacoplada com interfaces e serviços
+- ✅ Diagrama UML com Mermaid
+- ✅ Uso do Lombok para gerar getters/setters automaticamente
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+---
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+## 🧱 Tecnologias
 
-## Dependency Management
+- Java 17+
+- Lombok
+- API de Collections (Streams, HashSet)
+- Mermaid (UML no GitHub)
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+---
+
+> Certifique-se de ter o [Lombok](https://projectlombok.org/setup/java) corretamente configurado em seu ambiente.
+
+## 📐 Diagrama UML
 
 ```mermaid
         classDiagram
@@ -90,3 +102,11 @@ IAuthenticationService <|.. AuthenticationService
 
 
 ```
+
+## 📄 Licença
+
+Este projeto é open-source e está licenciado sob a [MIT License](LICENSE).
+
+---
+
+> Desenvolvido com ☕ por [Lucas Gabriel](https://github.com/luk-z0)
